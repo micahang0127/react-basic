@@ -67,14 +67,14 @@
     </>
     );
 
-        [defaultProps]
-        rops 를 지정하지 않았을 때 기본적으로 사용 할 값을 설정하고 싶다면 컴포넌트에 defaultProps 라는 값을 설정
-        function Hello({ color, name }) {
-        return <div style={{ color }}>안녕하세{name}</div>
-        }
-        Hello.defaultProps = {
-        name: '이름없음'
-        }
+    [defaultProps]
+    props 를 지정하지 않았을 때 기본적으로 사용 할 값을 설정하고 싶다면 컴포넌트에 defaultProps 라는 값을 설정
+    function Hello({ color, name }) {
+    return <div style={{ color }}>안녕하세{name}</div>
+    }
+    Hello.defaultProps = {
+    name: '이름없음'
+    }
 
         [javascript &&]
         {isSpecial && <b>_</b>}
