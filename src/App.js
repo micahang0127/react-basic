@@ -1,5 +1,5 @@
 import React from "react";
-import InputSample from "./InputSample";
+import InputSample from "./InputSample2";
 
 function App() {
   return <InputSample />;
