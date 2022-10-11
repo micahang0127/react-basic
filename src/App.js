@@ -1,8 +1,8 @@
 import React from "react";
-import InputSample from "./InputSample2";
+import UseRef from "./UseRef";
 
 function App() {
-  return <InputSample />;
+  return <UseRef />;
 }
 
 export default App;
