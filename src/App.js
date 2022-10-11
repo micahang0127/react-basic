@@ -1,8 +1,8 @@
 import React from "react";
-import UseRef from "./UseRef";
+import ComponentsMap from "./ComponentsMap";
 
 function App() {
-  return <UseRef />;
+  return <ComponentsMap />;
 }
 
 export default App;
