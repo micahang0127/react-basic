@@ -14,13 +14,13 @@ function App() {
   });
 
   const { username, email } = inputs;
-  const onChange = (e) => {
+  const onChange = useCallback((e) => {
     const { name, value } = e.target;
-    setInputs({
+    setInputs((inputs) => ({
       ...inputs,
       [name]: value,
-    });
-  };
+    }));
+  }, []);
 
   const [users, setUsers] = useState([
     {
@@ -48,28 +48,26 @@ function App() {
 
   // 방법1. spread 연산자 사용
   // 방법2. cancat 함수 사용 - 기존의 배열을 수정하지 않고, 새로운 원소가 추가된 새로운 배열을 만들어 준다.
-  const onCreate = () => {
+  const onCreate = useCallback(() => {
     const user = {
       id: nextId.current,
       username,
       email,
     };
-
-    // 방법1
-    setUsers([...users, user]);
-    // 방법2
-    // setUsers(users.concat(user));
+    setUsers((users) => users.concat(user));
 
     setInputs({
       username: "",
       email: "",
     });
     nextId.current += 1;
-  };
+  }, [username, email]);
 
-  const onRemove = (id) => {
-    setUsers(users.filter((user) => user.id !== id));
-  };
+  const onRemove = useCallback((id) => {
+    // user.id 가 파라미터로 일치하지 않는 원소만 추출해서 새로운 배열을 만듬
+    // = user.id 가 id 인 것을 제거함
+    setUsers((users) => users.filter((user) => user.id !== id));
+  }, []);
 
   // const onToggle = (id) => {
   //   setUsers(
@@ -81,16 +79,13 @@ function App() {
 
   // useCallback
   // 함수 안에서 사용하는 상태 혹은 props 가 있다면 꼭, deps 배열안에 포함시켜야 된다는 것
-  const onToggle = useCallback(
-    (id) => {
-      setUsers(
-        users.map((user) =>
-          user.id === id ? { ...user, active: !user.active } : user
-        )
-      );
-    },
-    [users]
-  );
+  const onToggle = useCallback((id) => {
+    setUsers((users) =>
+      users.map((user) =>
+        user.id === id ? { ...user, active: !user.active } : user
+      )
+    );
+  }, []);
 
   // useMemo를 사용하지 않으면, input change에서도 리렌더링됨
   // const count = countActiveUsers(users);
