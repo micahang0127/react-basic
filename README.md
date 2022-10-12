@@ -18,71 +18,94 @@
 
   -- 개념
   [props] : properties의 줄임말
+  [mount, unmount, update]  
+   mount(마운트) : 처음 나타났을 때  
+   주로 마운트 시에 하는 작업
+  props 로 받은 값을 컴포넌트의 로컬 상태로 설정
+  외부 API 요청 (REST API 등)
+  라이브러리 사용 (D3, Video.js 등...)
+  setInterval 을 통한 반복작업 혹은 setTimeout 을 통한 작업 예약
 
-  -- Code
-  [JSX]
-  JSX 는 리액트에서 생김새를 정의할 때, 사용하는 JavaScript 문법입니다.
-  리액트 컴포넌트 파일에서 XML 형태로 코드를 작성하면 babel 이 JSX 를 JavaScript 로 변환을 해줍니다. JSX 가 JavaScript 로 제대로 변환이 되려면 지켜주어야 하는 몇가지 규칙이 있습니다
+  unmount(언마운트) : 사라질 때
+  주로 언마운트 시에 하는 작업
+  setInterval, setTimeout 을 사용하여 등록한 작업들 clear 하기 (clearInterval, clearTimeout)
+  라이브러리 인스턴스 제거
 
-  [ReactDOM.render]
-  ReactDOM.render(<App />, document.getElementById('root'));
+  update(업데이트) : 특정 props가 바뀔 때
 
-  ReactDOM.render 의 역할은 브라우저에 있는 실제 DOM 내부에 리액트 컴포넌트를 렌더링하겠다는 것을 의미합니다. id 가 root 인 DOM 을 선택하고 있는데, 이 DOM은 public/index.html 파일에 있습니다. 리액트 컴포넌트가 렌더링 될 때에는, 렌더링된 결과물이 위 div 내부에 렌더링되는 것 입니다
+-- Code
+[JSX]
+JSX 는 리액트에서 생김새를 정의할 때, 사용하는 JavaScript 문법입니다.
+리액트 컴포넌트 파일에서 XML 형태로 코드를 작성하면 babel 이 JSX 를 JavaScript 로 변환을 해줍니다. JSX 가 JavaScript 로 제대로 변환이 되려면 지켜주어야 하는 몇가지 규칙이 있습니다
 
-  public/index.html
+[ReactDOM.render]
+ReactDOM.render(<App />, document.getElementById('root'));
+
+ReactDOM.render 의 역할은 브라우저에 있는 실제 DOM 내부에 리액트 컴포넌트를 렌더링하겠다는 것을 의미합니다. id 가 root 인 DOM 을 선택하고 있는데, 이 DOM은 public/index.html 파일에 있습니다. 리액트 컴포넌트가 렌더링 될 때에는, 렌더링된 결과물이 위 div 내부에 렌더링되는 것 입니다
+
+public/index.html
+
   <div id="root"></div>
 
-  [규칙]
+[규칙]
 
-  - 꼭 감싸져야하는 태그
-  두가 이상의 태그는 무조건 하나의 태그로 감싸져있어야 합니다
-  function App() {
+- 꼭 감싸져야하는 태그
+두가 이상의 태그는 무조건 하나의 태그로 감싸져있어야 합니다
+function App() {
+return (
+<div>
+<Hello />
+<div>안녕히계세요</div>
+</div>
+);
+}
+이렇게 단순히 감싸기 위하여 불필요한 div 로 감싸는게 별로 좋지 않은 상황도 있습니다. 그럴 땐, 리액트의 Fragment 라는 것을 사용하면 됩니다.
+function App() {
   return (
-  <div>
-  <Hello />
-  <div>안녕히계세요</div>
-  </div>
-  );
-  }
-  이렇게 단순히 감싸기 위하여 불필요한 div 로 감싸는게 별로 좋지 않은 상황도 있습니다. 그럴 땐, 리액트의 Fragment 라는 것을 사용하면 됩니다.
-  function App() {
-    return (
-      <>
-        <Hello />
-        <div>안녕히계세요</div>
-      </>
-    );
-  }
-
-  - 주석
-    return (
     <>
-    {/_ 주석은 화면에 보이지 않습니다 _/}
-    /_ 중괄호로 감싸지 않으면 화면에 보입니다 _/
-    <Hello
-    // 열리는 태그 내부에서는 이렇게 주석을 작성 할 수 있습니다.
-    />
-    <div style={style}>{name}</div>
-    <div className="gray-box"></div>
+      <Hello />
+      <div>안녕히계세요</div>
     </>
-    );
+  );
+}
 
-    [defaultProps]
-    props 를 지정하지 않았을 때 기본적으로 사용 할 값을 설정하고 싶다면 컴포넌트에 defaultProps 라는 값을 설정
-    function Hello({ color, name }) {
-    return <div style={{ color }}>안녕하세{name}</div>
-    }
-    Hello.defaultProps = {
-    name: '이름없음'
-    }
+- 주석
+  return (
+  <>
+  {/_ 주석은 화면에 보이지 않습니다 _/}
+  /_ 중괄호로 감싸지 않으면 화면에 보입니다 _/
+  <Hello
+  // 열리는 태그 내부에서는 이렇게 주석을 작성 할 수 있습니다.
+  />
+  <div style={style}>{name}</div>
+  <div className="gray-box"></div>
+  </>
+  );
 
-        [javascript &&]
-        {isSpecial && <b>_</b>}
-        isSpecial 이 false 일땐 false 이고, isSpecial이 true 일 땐 <b>_</b> 가 됩니다.
+  [defaultProps]
+  props 를 지정하지 않았을 때 기본적으로 사용 할 값을 설정하고 싶다면 컴포넌트에 defaultProps 라는 값을 설정
+  function Hello({ color, name }) {
+  return <div style={{ color }}>안녕하세{name}</div>
+  }
+  Hello.defaultProps = {
+  name: '이름없음'
+  }
 
-        [props 값 설정을 생략하면 ={true}]
-          <Hello name="react" color="red" isSpecial />
-        isSpecial 이름만 넣어주면 isSpecial={true} 와 동일한 의미
+          [javascript &&]
+          {isSpecial && <b>_</b>}
+          isSpecial 이 false 일땐 false 이고, isSpecial이 true 일 땐 <b>_</b> 가 됩니다.
 
-    [참고]  
-    https://react.vlpt.us/basic/01-concept.html
+          [props 값 설정을 생략하면 ={true}]
+            <Hello name="react" color="red" isSpecial />
+          isSpecial 이름만 넣어주면 isSpecial={true} 와 동일한 의미
+
+  [배열, 객체 불변성 규칙]  
+  리액트에서 배열, 객체 변경은 불변성을 지켜주어야 한다.  
+  때문에 배열에 push, splice, sort 등의 함수를 사용하면 안된다.  
+  기존의 배열을 복사후 사용해야 한다.
+
+  방법1. spread 연산자 사용  
+  방법2. cancat 함수 사용 - 기존의 배열을 수정하지 않고, 새로운 원소가 추가된 새로운 배열을 만들어 준다.
+
+[참고]  
+ https://react.vlpt.us/basic/01-concept.html
